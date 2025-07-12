@@ -1,0 +1,229 @@
+Found 92 episode files
+Checking 1/92: episode_000000
+  parquet=282, video=282
+Checking 2/92: episode_000001
+  parquet=284, video=284
+Checking 3/92: episode_000002
+  parquet=284, video=284
+Checking 4/92: episode_000003
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 5/92: episode_000004
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 6/92: episode_000005
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 7/92: episode_000006
+  parquet=282, video=282
+Checking 8/92: episode_000007
+  parquet=469, video=469
+Checking 9/92: episode_000008
+  parquet=471, video=471
+Checking 10/92: episode_000009
+  parquet=471, video=471
+Checking 11/92: episode_000010
+  parquet=471, video=471
+Checking 12/92: episode_000011
+  parquet=471, video=471
+Checking 13/92: episode_000012
+  parquet=468, video=468
+Checking 14/92: episode_000013
+  parquet=280, video=280
+Checking 15/92: episode_000014
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 16/92: episode_000015
+  parquet=284, video=284
+Checking 17/92: episode_000016
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 18/92: episode_000017
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 19/92: episode_000018
+  parquet=284, video=284
+Checking 20/92: episode_000019
+  parquet=284, video=284
+Checking 21/92: episode_000020
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 22/92: episode_000021
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 23/92: episode_000022
+  parquet=284, video=284
+Checking 24/92: episode_000023
+  parquet=284, video=284
+Checking 25/92: episode_000024
+  parquet=281, video=281
+Checking 26/92: episode_000025
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 27/92: episode_000026
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 28/92: episode_000027
+  parquet=284, video=284
+Checking 29/92: episode_000028
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 30/92: episode_000029
+  parquet=284, video=284
+Checking 31/92: episode_000030
+  parquet=284, video=284
+Checking 32/92: episode_000031
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 33/92: episode_000032
+  parquet=284, video=284
+Checking 34/92: episode_000033
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 35/92: episode_000034
+  parquet=284, video=284
+Checking 36/92: episode_000035
+  parquet=284, video=284
+Checking 37/92: episode_000036
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 38/92: episode_000037
+  parquet=282, video=282
+Checking 39/92: episode_000038
+  parquet=284, video=284
+Checking 40/92: episode_000039
+  parquet=284, video=284
+Checking 41/92: episode_000040
+  parquet=284, video=284
+Checking 42/92: episode_000041
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 43/92: episode_000042
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 44/92: episode_000043
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 45/92: episode_000044
+  parquet=284, video=284
+Checking 46/92: episode_000045
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 47/92: episode_000046
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 48/92: episode_000047
+  parquet=284, video=284
+Checking 49/92: episode_000048
+  parquet=284, video=284
+Checking 50/92: episode_000049
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 51/92: episode_000050
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 52/92: episode_000051
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 53/92: episode_000052
+  parquet=281, video=281
+Checking 54/92: episode_000053
+  parquet=281, video=281
+Checking 55/92: episode_000054
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 56/92: episode_000055
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 57/92: episode_000056
+  parquet=284, video=284
+Checking 58/92: episode_000057
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 59/92: episode_000058
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 60/92: episode_000059
+  parquet=284, video=284
+Checking 61/92: episode_000060
+  parquet=284, video=284
+Checking 62/92: episode_000061
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 63/92: episode_000062
+  parquet=284, video=284
+Checking 64/92: episode_000063
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 65/92: episode_000064
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 66/92: episode_000065
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 67/92: episode_000066
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 68/92: episode_000067
+  parquet=284, video=284
+Checking 69/92: episode_000068
+  parquet=284, video=284
+Checking 70/92: episode_000069
+  parquet=284, video=284
+Checking 71/92: episode_000070
+  parquet=282, video=282
+Checking 72/92: episode_000071
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 73/92: episode_000072
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 74/92: episode_000073
+  parquet=282, video=282
+Checking 75/92: episode_000074
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 76/92: episode_000075
+  parquet=284, video=284
+Checking 77/92: episode_000076
+  parquet=284, video=284
+Checking 78/92: episode_000077
+  parquet=284, video=284
+Checking 79/92: episode_000078
+  parquet=284, video=284
+Checking 80/92: episode_000079
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 81/92: episode_000080
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 82/92: episode_000081
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 83/92: episode_000082
+  parquet=284, video=284
+Checking 84/92: episode_000083
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 85/92: episode_000084
+  parquet=282, video=282
+Checking 86/92: episode_000085
+  parquet=282, video=282
+Checking 87/92: episode_000086
+  parquet=281, video=281
+Checking 88/92: episode_000087
+  parquet=282, video=282
+Checking 89/92: episode_000088
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 90/92: episode_000089
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 91/92: episode_000090
+  parquet=283, video=283
+  FOUND PROBLEM: This episode has exactly 283 frames!
+Checking 92/92: episode_000091
+  parquet=284, video=284
+
+Problematic episodes: ['episode_000003_283_frames', 'episode_000004_283_frames', 'episode_000005_283_frames', 'episode_000014_283_frames', 'episode_000016_283_frames', 'episode_000017_283_frames', 'episode_000020_283_frames', 'episode_000021_283_frames', 'episode_000025_283_frames', 'episode_000026_283_frames', 'episode_000028_283_frames', 'episode_000031_283_frames', 'episode_000033_283_frames', 'episode_000036_283_frames', 'episode_000041_283_frames', 'episode_000042_283_frames', 'episode_000043_283_frames', 'episode_000045_283_frames', 'episode_000046_283_frames', 'episode_000049_283_frames', 'episode_000050_283_frames', 'episode_000051_283_frames', 'episode_000054_283_frames', 'episode_000055_283_frames', 'episode_000057_283_frames', 'episode_000058_283_frames', 'episode_000061_283_frames', 'episode_000063_283_frames', 'episode_000064_283_frames', 'episode_000065_283_frames', 'episode_000066_283_frames', 'episode_000071_283_frames', 'episode_000072_283_frames', 'episode_000074_283_frames', 'episode_000079_283_frames', 'episode_000080_283_frames', 'episode_000081_283_frames', 'episode_000083_283_frames', 'episode_000088_283_frames', 'episode_000089_283_frames', 'episode_000090_283_frames']
+Problematic episodes saved to problematic_episodes.txt

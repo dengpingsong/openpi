@@ -533,12 +533,23 @@ class LeRobotSo101DataConfig(DataConfigFactory):
         # 从指定的本地数据集路径加载norm stats
         norm_stats = None
         try:
-            local_meta_path = pathlib.Path(self.local_dataset_path) / "meta"
-            if local_meta_path.exists():
-                norm_stats = _normalize.load(str(local_meta_path))
-                logging.info(f"Loaded norm stats from {local_meta_path}")
+            # First try to load from the assets directory (where compute_norm_stats.py saves them)
+            assets_norm_path = assets_dirs / self.repo_id
+            logging.info(f"Trying to load norm stats from assets path: {assets_norm_path}")
+            if assets_norm_path.exists():
+                logging.info(f"Assets path exists, attempting to load norm stats...")
+                norm_stats = _normalize.load(str(assets_norm_path))
+                logging.info(f"Successfully loaded norm stats from {assets_norm_path}")
             else:
-                logging.warning(f"Norm stats not found at {local_meta_path}")
+                logging.warning(f"Assets path does not exist: {assets_norm_path}")
+                # Fallback to local dataset meta directory
+                local_meta_path = pathlib.Path(self.local_dataset_path) / "meta"
+                logging.info(f"Trying fallback path: {local_meta_path}")
+                if local_meta_path.exists():
+                    norm_stats = _normalize.load(str(local_meta_path))
+                    logging.info(f"Loaded norm stats from {local_meta_path}")
+                else:
+                    logging.warning(f"Norm stats not found at {local_meta_path}")
         except Exception as e:
             logging.warning(f"Failed to load norm stats: {e}")
 
