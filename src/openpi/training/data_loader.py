@@ -125,29 +125,73 @@ class FakeDataset(Dataset):
     def __len__(self) -> int:
         return self._num_samples
 
+from pathlib import Path
+import json
 
 def create_torch_dataset(
     data_config: _config.DataConfig, action_horizon: int, model_config: _model.BaseModelConfig
 ) -> Dataset:
-    """Create a dataset for training."""
+    """Create a dataset for training (offline-safe version)."""
+
     repo_id = data_config.repo_id
+    root = data_config.local_dataset_path
+
     if repo_id is None:
         raise ValueError("Repo ID is not set. Cannot create dataset.")
     if repo_id == "fake":
         return FakeDataset(model_config, num_samples=1024)
+    
+    if root is None:
+        dataset_meta = lerobot_dataset.LeRobotDatasetMetadata(repo_id)
+        dataset = lerobot_dataset.LeRobotDataset(
+            data_config.repo_id,
+            delta_timestamps={
+                key: [t / dataset_meta.fps for t in range(action_horizon)] for key in data_config.action_sequence_keys
+            },
+        )
 
-    dataset_meta = lerobot_dataset.LeRobotDatasetMetadata(repo_id)
-    dataset = lerobot_dataset.LeRobotDataset(
-        data_config.repo_id,
-        delta_timestamps={
-            key: [t / dataset_meta.fps for t in range(action_horizon)] for key in data_config.action_sequence_keys
-        },
-    )
+        if data_config.prompt_from_task:
+            dataset = TransformedDataset(dataset, [_transforms.PromptFromLeRobotTask(dataset_meta.tasks)])
+    else :
+        # 构造本地路径
+        dataset_root = Path(root) / repo_id
+        info_path = dataset_root / "meta" / "info.json"
+        dataset_meta = lerobot_dataset.LeRobotDatasetMetadata(dataset_root)
+        # 读取 info.json 获取 fps（用于计算 delta_timestamps）
+        if not info_path.exists():
+            raise FileNotFoundError(f"Missing info.json at {info_path}")
+        with open(info_path, "r") as f:
+            info = json.load(f)
 
-    if data_config.prompt_from_task:
-        dataset = TransformedDataset(dataset, [_transforms.PromptFromLeRobotTask(dataset_meta.tasks)])
+        fps = info.get("fps", 30)  # 如果 info 里没有 fps 字段，默认 30
+        delta_timestamps = {
+            key: [t / fps for t in range(action_horizon)]
+            for key in data_config.action_sequence_keys
+        }
+
+        # 离线构造 LeRobotDataset
+        dataset = lerobot_dataset.LeRobotDataset(
+            repo_id=repo_id,
+            root=dataset_root,
+            delta_timestamps=delta_timestamps,
+            force_cache_sync=False,
+            download_videos=False,
+        )
+
+        # 如果需要从任务中获取 prompt
+        if data_config.prompt_from_task:
+            task_path = dataset_root / "meta" / "tasks.jsonl"
+            if not task_path.exists():
+                raise FileNotFoundError(f"Missing tasks.jsonl at {task_path}")
+            # 读取 tasks 信息并转换为字典格式
+            with open(task_path, "r") as f:
+                task_list = [json.loads(line) for line in f]
+            # 将列表转换为字典 {task_index: task}
+            tasks = {task["task_index"]: task["task"] for task in task_list}
+            dataset = TransformedDataset(dataset, [_transforms.PromptFromLeRobotTask(tasks)])
 
     return dataset
+
 
 
 def create_rlds_dataset(

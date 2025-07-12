@@ -20,6 +20,7 @@ import openpi.models.tokenizer as _tokenizer
 import openpi.policies.aloha_policy as aloha_policy
 import openpi.policies.droid_policy as droid_policy
 import openpi.policies.libero_policy as libero_policy
+import openpi.policies.so101_policy as so101_policy
 import openpi.shared.download as _download
 import openpi.shared.normalize as _normalize
 import openpi.training.droid_rlds_dataset as droid_rlds_dataset
@@ -67,6 +68,8 @@ class DataConfig:
     asset_id: str | None = None
     # Contains precomputed normalization stats. If None, normalization will not be performed.
     norm_stats: dict[str, _transforms.NormStats] | None = None
+    # Local dataset root path. If provided, the dataset will be loaded from this path instead of from HuggingFace.
+    local_dataset_path: str | None = None
 
     # Used to adopt the inputs from a dataset specific format to a common format
     # which is expected by the data transforms.
@@ -468,6 +471,88 @@ class TrainConfig:
             raise ValueError("Cannot resume and overwrite at the same time.")
 
 
+@dataclasses.dataclass(frozen=True)
+class LeRobotSo101DataConfig(DataConfigFactory):
+    """
+    DataConfig for the so101_follower robot with multiple image modalities (front, usb, gel28w2).
+    Uses local LeRobot format dataset.
+    """
+    
+    # 本地数据集的完整路径，可以通过构造函数传入
+    local_dataset_path: str = tyro.MISSING
+    # repo_id 用于标识，但实际数据从本地路径加载
+    repo_id: str = "so101_follower"
+    base_config: DataConfig | None = None
+    # Action keys that will be used to read the action sequence from the dataset.
+    action_sequence_keys: Sequence[str] = ("action",)
+
+    @override
+    def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
+        # Repacks your dataset keys to standard keys expected by inference pipeline
+        repack_transform = _transforms.Group(
+            inputs=[
+                _transforms.RepackTransform({
+                    "image": "observation.images.front",
+                    "wrist_image": "observation.images.usb", 
+                    "tactile_image": "observation.images.gel28w2",
+                    "state": "observation.state",
+                    "actions": "action",
+                    "prompt": "prompt",
+                })
+            ]
+        )
+
+        # Default transforms
+        data_transforms = _transforms.Group(
+            inputs=[so101_policy.So101Inputs(
+                action_dim=model_config.action_dim,
+                model_type=model_config.model_type,
+            )],
+            outputs=[so101_policy.So101Outputs()],
+        )
+
+        # Apply delta transform to joints only (5 joints + 1 gripper)
+        delta_action_mask = _transforms.make_bool_mask(5, -1)
+        data_transforms = data_transforms.push(
+            inputs=[_transforms.DeltaActions(delta_action_mask)],
+            outputs=[_transforms.AbsoluteActions(delta_action_mask)],
+        )
+
+        # Tokenizer and target formatting
+        model_transforms = ModelTransformFactory()(model_config)
+
+        # 使用基类方法创建基础配置，并指定本地数据集路径
+        base_config = dataclasses.replace(
+            self.base_config or DataConfig(),
+            repo_id=self.repo_id,
+            asset_id=self.repo_id,
+            prompt_from_task=True,
+            local_dataset_path=self.local_dataset_path,
+        )
+
+        # 从指定的本地数据集路径加载norm stats
+        norm_stats = None
+        try:
+            local_meta_path = pathlib.Path(self.local_dataset_path) / "meta"
+            if local_meta_path.exists():
+                norm_stats = _normalize.load(str(local_meta_path))
+                logging.info(f"Loaded norm stats from {local_meta_path}")
+            else:
+                logging.warning(f"Norm stats not found at {local_meta_path}")
+        except Exception as e:
+            logging.warning(f"Failed to load norm stats: {e}")
+
+        # Return final DataConfig
+        return dataclasses.replace(
+            base_config,
+            norm_stats=norm_stats,
+            repack_transforms=repack_transform,
+            data_transforms=data_transforms,
+            model_transforms=model_transforms,
+            use_quantile_norm=model_config.model_type == ModelType.PI0_FAST,
+            action_sequence_keys=self.action_sequence_keys,
+        ) 
+    
 # Use `get_config` if you need to get a config by name in your code.
 _CONFIGS = [
     #
@@ -726,8 +811,22 @@ _CONFIGS = [
         weight_loader=weight_loaders.CheckpointWeightLoader("./checkpoints/debug/debug/9/params"),
         overwrite=True,
         exp_name="debug",
-        num_train_steps=10,
         wandb_enabled=False,
+    ),
+    TrainConfig(
+        name="pi0_fast_so101_local",
+        model=pi0_fast.Pi0FASTConfig(
+            action_dim=6,
+            action_horizon=10,
+            max_token_len=180,
+        ),
+        data=LeRobotSo101DataConfig(
+            local_dataset_path="/hdd/dps/openpi/merge_data/",
+        ),
+        weight_loader=weight_loaders.CheckpointWeightLoader(
+            "gs://openpi-assets/checkpoints/pi0_fast_base/params"
+        ),
+        num_train_steps=30000,
     ),
 ]
 

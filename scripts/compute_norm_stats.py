@@ -15,6 +15,11 @@ import openpi.training.config as _config
 import openpi.training.data_loader as _data_loader
 import openpi.transforms as transforms
 
+import warnings
+warnings.filterwarnings("ignore")
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # 只显示 FATAL 错误，屏蔽 INFO、WARNING、ERROR
+
 
 class RemoveStrings(transforms.DataTransformFn):
     def __call__(self, x: dict) -> dict:
@@ -49,7 +54,7 @@ def create_torch_dataloader(
     data_loader = _data_loader.TorchDataLoader(
         dataset,
         local_batch_size=batch_size,
-        num_workers=8,
+        num_workers=0,  # Disable multiprocessing to avoid video decoding issues
         shuffle=shuffle,
         num_batches=num_batches,
     )
@@ -87,7 +92,6 @@ def create_rlds_dataloader(
 def main(config_name: str, max_frames: int | None = None):
     config = _config.get_config(config_name)
     data_config = config.data.create(config.assets_dirs, config.model)
-
     if data_config.rlds_data_dir is not None:
         data_loader, num_batches = create_rlds_dataloader(
             data_config, config.model.action_horizon, config.batch_size, max_frames
