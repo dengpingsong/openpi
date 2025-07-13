@@ -54,7 +54,7 @@ def create_torch_dataloader(
     data_loader = _data_loader.TorchDataLoader(
         dataset,
         local_batch_size=batch_size,
-        num_workers=0,  # Disable multiprocessing to avoid video decoding issues
+        num_workers=16,  # Disable multiprocessing to avoid video decoding issues
         shuffle=shuffle,
         num_batches=num_batches,
     )

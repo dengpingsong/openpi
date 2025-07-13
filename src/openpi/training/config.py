@@ -835,6 +835,21 @@ _CONFIGS = [
             local_dataset_path="/hdd/dps/openpi/merge_data/",
         ),
         weight_loader=weight_loaders.CheckpointWeightLoader(
+            "gs://openpi-assets/checkpoints/pi0_base/params"
+        ),
+        num_train_steps=30000,
+    ),
+    TrainConfig(
+        name="pi0_fast_so101_remote",
+        model=pi0_fast.Pi0FASTConfig(
+            action_dim=6,
+            action_horizon=10,
+            max_token_len=180,
+        ),
+        data=LeRobotSo101DataConfig(
+            local_dataset_path="youliangtan/so101-table-cleanup",
+        ),
+        weight_loader=weight_loaders.CheckpointWeightLoader(
             "gs://openpi-assets/checkpoints/pi0_fast_base/params"
         ),
         num_train_steps=30000,

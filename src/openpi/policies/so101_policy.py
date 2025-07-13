@@ -34,7 +34,7 @@ class So101Inputs(transforms.DataTransformFn):
     Expected inputs:
     - image: front camera image
     - wrist_image: usb camera image  
-    - tactile_image: gel28w2 tactile sensor image
+    - tactile_image: gel28w2 tactile sensor image (optional)
     - state: robot proprioceptive state [5D]
     - actions: action sequence [action_horizon, 6D] (5 joints + 1 gripper)
     """
@@ -55,19 +55,32 @@ class So101Inputs(transforms.DataTransformFn):
         # Parse images to uint8 (H,W,C) format
         front_image = _parse_image(data["image"])
         wrist_image = _parse_image(data["wrist_image"])
-        tactile_image = _parse_image(data["tactile_image"])
+        
+        # Check if tactile image is available
+        has_tactile = "tactile_image" in data and data["tactile_image"] is not None
+        tactile_image = _parse_image(data["tactile_image"]) if has_tactile else None
         
         match self.model_type:
             case _model.ModelType.PI0:
                 # Pi0 supports three image inputs: base, left_wrist, right_wrist
-                names = ("base_0_rgb", "left_wrist_0_rgb", "right_wrist_0_rgb")
-                images = (front_image, wrist_image, tactile_image)
-                image_masks = (np.True_, np.True_, np.True_)
+                if has_tactile:
+                    names = ("base_0_rgb", "left_wrist_0_rgb", "right_wrist_0_rgb")
+                    images = (front_image, wrist_image, tactile_image)
+                    image_masks = (np.True_, np.True_, np.True_)
+                else:
+                    names = ("base_0_rgb", "left_wrist_0_rgb")
+                    images = (front_image, wrist_image)
+                    image_masks = (np.True_, np.True_)
             case _model.ModelType.PI0_FAST:
                 # Pi0-FAST uses different naming and doesn't mask padding images
-                names = ("base_0_rgb", "base_1_rgb", "wrist_0_rgb")
-                images = (front_image, tactile_image, wrist_image)
-                image_masks = (np.True_, np.True_, np.True_)
+                if has_tactile:
+                    names = ("base_0_rgb", "base_1_rgb", "wrist_0_rgb")
+                    images = (front_image, tactile_image, wrist_image)
+                    image_masks = (np.True_, np.True_, np.True_)
+                else:
+                    names = ("base_0_rgb", "wrist_0_rgb")
+                    images = (front_image, wrist_image)
+                    image_masks = (np.True_, np.True_)
             case _:
                 raise ValueError(f"Unsupported model type: {self.model_type}")
         
