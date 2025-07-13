@@ -1,0 +1,22 @@
+# Requirements for running eval_lerobot.py with OpenPi remote inference
+# Robot control and evaluation
+lerobot
+draccus
+numpy
+matplotlib
+
+# Image processing
+Pillow
+
+# WebSocket communication
+websockets
+
+# Message packing (included in openpi-client)
+msgpack
+msgpack-numpy
+
+# OpenPi client (install from local package)
+# pip install -e packages/openpi-client
+
+# For debugging and testing
+argparse  # Usually built-in, but listed for completeness
